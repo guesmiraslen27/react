@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Membership Confirmed - Pegasus Fashion</title>
+    <link rel="stylesheet" href="stylevip.css">
+</head>
+<body>
+    <main>
+        <div class="confirmation-container">
+            <div class="confirmation-box">
+                <i class="fas fa-check-circle"></i>
+                <h1>Welcome to VIP!</h1>
+                <p>Your membership has been successfully activated.</p>
+                <div class="membership-details">
+                    <!-- Populated by JavaScript -->
+                </div>
+                <a href="shop.html" class="start-shopping-btn">Start Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('order');
+            
+            fetch('get_membership_details.php?order=' + orderId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.querySelector('.membership-details').innerHTML = `
+                            <h3>${data.plan.toUpperCase()} Member</h3>
+                            <p>Your exclusive benefits are now active!</p>
+                        `;
+                    }
+                });
+        });
+    </script>
+</body>
+</html> 

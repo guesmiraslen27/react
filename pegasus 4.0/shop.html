@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Pegasus Fashion</title>
+    <link rel="stylesheet" href="styleshop.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="pegasus-logo.png" alt="Pegasus Fashion Logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="#about">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="auth-links">
+                <a href="cart.html" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <a href="login.html">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="shop-container">
+            <h1>Our Products</h1>
+            <div class="filters">
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                    <option value="hoodies">Hoodies</option>
+                    <option value="t-shirts">T-Shirts</option>
+                    <option value="jackets">Jackets</option>
+                </select>
+                <select id="price-filter">
+                    <option value="all">All Prices</option>
+                    <option value="0-25">$0 - $25</option>
+                    <option value="25-50">$25 - $50</option>
+                    <option value="50+">$50+</option>
+                </select>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Metal Style Hoodie Product -->
+                <div class="product-card">
+                    <img src="poseidon-hoodie.webp" alt="poseidon Style Hoodie">
+                    <div class="product-info">
+                        <h3>poseidon Style Hoodie</h3>
+                        <p class="description">Black hoodie with minimalist poseidon design pattern</p>
+                        <p class="price">$62.4</p>
+                        <div class="product-actions">
+                            <select class="size-select">
+                                <option value="">Select Size</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medusa Leather Jacket Product -->
+                <div class="product-card">
+                    <img src="medusa-jacket.jpg" alt="Medusa Gothic Leather Jacket">
+                    <div class="product-info">
+                        <h3>Medusa Gothic Leather Jacket</h3>
+                        <p class="description">Black leather jacket with hand-painted Medusa design on the back</p>
+                        <p class="price">$119.9</p>
+                        <div class="product-actions">
+                            <select class="size-select">
+                                <option value="">Select Size</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                            </select>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medusa T-Shirt Product -->
+                <div class="product-card">
+                    <img src="medusa-tshirt.jpeg" alt="Medusa Gothic T-Shirt">
+                    <div class="product-info">
+                        <h3>Medusa Gothic T-Shirt</h3>
+                        <p class="description">Black t-shirt with elegant Medusa design in grayscale</p>
+                        <p class="price">$30.5</p>
+                        <div class="product-actions">
+                            <select class="size-select">
+                                <option value="">Select Size</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medusa Hoodie Product -->
+                <div class="product-card">
+                    <img src="medusa-hoodie.jpg" alt="Medusa Gothic Hoodie">
+                    <div class="product-info">
+                        <h3>Medusa Gothic Hoodie</h3>
+                        <p class="description">Black hoodie with gothic Medusa design on the back</p>
+                        <p class="price">$50.3</p>
+                        <div class="product-actions">
+                            <select class="size-select">
+                                <option value="">Select Size</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hoodie Product -->
+                <div class="product-card">
+                    <img src="hoodie.png" alt="Metal Style Hoodie">
+                    <div class="product-info">
+                        <h3>Metal Style Hoodie</h3>
+                        <p class="description">Black hoodie with metallic design</p>
+                        <p class="price">$50.3</p>
+                        <div class="product-actions">
+                            <select class="size-select">
+                                <option value="">Select Size</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- T-Shirt Product -->
+                <div class="product-card">
+                    <img src="thor.png" alt="THOR Motocross T-Shirt">
+                    <div class="product-info">
+                        <h3>THOR sport T-Shirt</h3>
+                        <p class="description">Black sport t-shirt with thor design</p>
+                        <p class="price">$42.5</p>
+                        <div class="product-actions">
+                            <select class="size-select">
+                                <option value="">Select Size</option>
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#terms">Terms & Conditions</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#rules">Store Rules</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/PegasusFashion" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/pegasus.fashion" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:contact@pegasusfashion.com" aria-label="Contact us via email"><i class="far fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Pegasus Fashion. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for full-size image -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="fullImage">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryFilter = document.getElementById('category-filter');
+            const priceFilter = document.getElementById('price-filter');
+            const products = document.querySelectorAll('.product-card');
+
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('fullImage');
+            const closeBtn = document.querySelector('.close-modal');
+
+            // Add click event to all product images
+            document.querySelectorAll('.product-card img').forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                });
+            });
+
+            // Close modal when clicking X
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = "none";
+            });
+
+            // Close modal when clicking outside the image
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            categoryFilter.addEventListener('change', filterProducts);
+            priceFilter.addEventListener('change', filterProducts);
+
+            function filterProducts() {
+                const selectedCategory = categoryFilter.value;
+                const selectedPrice = priceFilter.value;
+
+                products.forEach(product => {
+                    const price = parseFloat(product.querySelector('.price').textContent.replace('$', ''));
+                    const category = product.querySelector('.product-info h3').textContent.toLowerCase();
+                    let showByCategory = selectedCategory === 'all' || 
+                        (category.includes('hoodie') && selectedCategory === 'hoodies') ||
+                        (category.includes('t-shirt') && selectedCategory === 't-shirts') ||
+                        (category.includes('jacket') && selectedCategory === 'jackets');
+                    
+                    let showByPrice = selectedPrice === 'all' ||
+                        (selectedPrice === '0-25' && price <= 25) ||
+                        (selectedPrice === '25-50' && price > 25 && price <= 50) ||
+                        (selectedPrice === '50+' && price > 50);
+
+                    if (showByCategory && showByPrice) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        function addToCart(productId, button) {
+            const sizeSelect = button.parentElement.querySelector('.size-select');
+            const selectedSize = sizeSelect.value;
+            
+            if (!selectedSize) {
+                alert('Please select a size');
+                return;
+            }
+
+            fetch('add_to_cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `product_id=${productId}&size=${selectedSize}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    if (data.error === 'Please login first') {
+                        window.location.href = 'login.html';
+                    } else {
+                        alert(data.error);
+                    }
+                } else {
+                    // Update cart count
+                    document.querySelector('.cart-count').textContent = data.cartCount;
+                    
+                    // Show success message
+                    const originalText = button.textContent;
+                    button.textContent = 'Added!';
+                    button.style.backgroundColor = '#4CAF50';
+                    button.disabled = true;
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.backgroundColor = '';
+                        button.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            });
+        }
+
+        // Update cart count on page load
+        fetch('get_cart_count.php')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.cart-count').textContent = data.count;
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html> 

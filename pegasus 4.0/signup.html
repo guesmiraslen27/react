@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="stylesign.css">
+    <link rel="stylesheet" href="fonts/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .vip-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .vip-btn.enabled {
+            opacity: 1;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+
+    </style>
+    <!-- Add this near the top of your HTML files -->
+    <script>
+    fetch('check_db_status.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status !== 'ok') {
+                console.error('Database error:', data.message);
+                // Optionally show user-friendly error message
+                alert('System is currently unavailable. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Connection error:', error);
+        });
+    </script>
+</head>
+<header>
+    <nav>
+        <div class="logo">
+            <img src="pegasus-logo.png" alt="Pegasus Fashion Logo">
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="#about">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="auth-links">
+            <a href="cart.html" class="cart-link">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </a>
+            <a href="login.html">Login</a>
+            <a href="signup.html" class="signup-btn">Sign Up</a>
+        </div>
+    </nav>
+</header>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <h1>SIGN UP </h1>
+            <p>WELCOME TO PEGASUS FAMILLY</p>
+        </div>
+        <div class="right-side">
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <h2>Sign Up</h2>
+                <div class="input-group">
+                    <input type="text" name="username" required>
+                    <label>Username</label>
+                </div>
+                <div class="input-group">
+                    <input type="email" name="email" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-group">
+                    <input type="tel" name="phone" required>
+                    <label>Phone</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" name="address" required>
+                    <label>Address</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="password" required>
+                    <label>Password</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" name="confirm_password" required>
+                    <label>Confirm Password</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#terms" class="terms-link">Terms & Conditions</a></label>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="standard-btn">Sign Up</button>
+                    <a href="vip-signup.html" class="vip-btn disabled" id="vipSignupBtn" onclick="return false;">VIP Sign Up</a>
+                </div>
+                <p class="signup-link">Already have an account? <a href="login.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="#terms">Terms & Conditions</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#rules">Store Rules</a>
+        </div>
+        <div class="footer-section">
+            <h3>Connect With Us</h3>
+            <div class="social-links">
+                <a href="https://www.facebook.com/PegasusFashion" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/pegasus.fashion" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:contact@pegasusfashion.com" aria-label="Contact us via email"><i class="far fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Pegasus Fashion. All rights reserved.</p>
+    </div>
+</footer>
+<script>
+// Form validation and VIP button control
+const form = document.getElementById('signupForm');
+const vipBtn = document.getElementById('vipSignupBtn');
+const requiredFields = form.querySelectorAll('input[required]');
+const termsCheckbox = document.getElementById('terms');
+
+function validateForm() {
+    let isValid = true;
+    const form = document.getElementById('signupForm');
+    const vipBtn = document.getElementById('vipSignupBtn');
+    const password = form.querySelector('[name="password"]');
+    const confirmPassword = form.querySelector('[name="confirm_password"]');
+    const termsCheckbox = document.getElementById('terms');
+    const errorMessages = [];
+
+    // Clear previous error messages
+    clearErrorMessages();
+
+    // Validate username
+    const username = form.querySelector('[name="username"]').value;
+    if (username.length < 3) {
+        isValid = false;
+        errorMessages.push('Username must be at least 3 characters long');
+    }
+
+    // Validate email
+    const email = form.querySelector('[name="email"]').value;
+    if (!isValidEmail(email)) {
+        isValid = false;
+        errorMessages.push('Please enter a valid email address');
+    }
+
+    // Validate phone
+    const phone = form.querySelector('[name="phone"]').value;
+    if (!isValidPhone(phone)) {
+        isValid = false;
+        errorMessages.push('Please enter a valid phone number');
+    }
+
+    // Validate password
+    if (password.value.length < 6) {
+        isValid = false;
+        errorMessages.push('Password must be at least 6 characters long');
+    }
+
+    if (password.value !== confirmPassword.value) {
+        isValid = false;
+        errorMessages.push('Passwords do not match');
+    }
+
+    // Check terms
+    if (!termsCheckbox.checked) {
+        isValid = false;
+        errorMessages.push('Please accept the terms and conditions');
+    }
+
+    // Display error messages if any
+    if (errorMessages.length > 0) {
+        showErrorMessages(errorMessages);
+    }
+
+    // Enable/disable VIP button
+    if (isValid) {
+        vipBtn.classList.remove('disabled');
+        vipBtn.classList.add('enabled');
+        vipBtn.onclick = handleVipRedirect;
+    } else {
+        vipBtn.classList.remove('enabled');
+        vipBtn.classList.add('disabled');
+        vipBtn.onclick = null;
+    }
+
+    return isValid;
+}
+
+// Helper functions
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPhone(phone) {
+    return /^\+?[\d\s-]{10,}$/.test(phone);
+}
+
+function showErrorMessages(messages) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-messages';
+    errorDiv.innerHTML = messages.map(msg => `<p>${msg}</p>`).join('');
+    document.getElementById('signupForm').appendChild(errorDiv);
+}
+
+function clearErrorMessages() {
+    const existingErrors = document.querySelector('.error-messages');
+    if (existingErrors) {
+        existingErrors.remove();
+    }
+}
+
+function handleVipRedirect() {
+    const formData = new FormData(document.getElementById('signupForm'));
+    sessionStorage.setItem('signupData', JSON.stringify(Object.fromEntries(formData)));
+    window.location.href = 'vip-signup.html';
+    return false;
+}
+
+// Add event listeners to all form fields
+requiredFields.forEach(field => {
+    field.addEventListener('input', validateForm);
+});
+termsCheckbox.addEventListener('change', validateForm);
+
+// Initial validation
+validateForm();
+
+function handleSignup(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('signupForm');
+    const formData = new FormData(form);
+
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Signing up...';
+    submitButton.disabled = true;
+
+    fetch('process_signup.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Store user data in session storage for VIP signup if needed
+            sessionStorage.setItem('signupData', JSON.stringify(Object.fromEntries(formData)));
+            
+            alert('Registration successful!');
+            window.location.href = 'login.html';
+        } else {
+            alert(data.error || 'Registration failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Something went wrong. Please try again.');
+    })
+    .finally(() => {
+        // Reset button state
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+    });
+}
+</script>
+</html>

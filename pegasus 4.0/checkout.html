@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Pegasus Fashion</title>
+    <link rel="stylesheet" href="stylecheckout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <!-- Same header as other pages -->
+    </header>
+
+    <main>
+        <div class="checkout-container">
+            <div class="checkout-sections">
+                <!-- Shipping Information -->
+                <section class="shipping-info">
+                    <h2>Shipping Information</h2>
+                    <form id="shippingForm">
+                        <div class="form-group">
+                            <input type="text" id="fullName" required>
+                            <label for="fullName">Full Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" required>
+                            <label for="phone">Phone Number</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="address" required>
+                            <label for="address">Street Address</label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="city" required>
+                                <label for="city">City</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="zipCode" required>
+                                <label for="zipCode">ZIP Code</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select id="country" required>
+                                <option value="">Select Country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="GB">United Kingdom</option>
+                                <!-- Add more countries as needed -->
+                            </select>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Payment Information -->
+                <section class="payment-info">
+                    <h2>Payment Information</h2>
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <input type="text" id="cardName" required>
+                            <label for="cardName">Name on Card</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="cardNumber" maxlength="19" required>
+                            <label for="cardNumber">Card Number</label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="expiry" maxlength="5" placeholder="MM/YY" required>
+                                <label for="expiry">Expiry Date</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="cvv" maxlength="3" required>
+                                <label for="cvv">CVV</label>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Order Summary -->
+            <section class="order-summary">
+                <h2>Order Summary</h2>
+                <div id="order-items">
+                    <!-- Items will be loaded dynamically -->
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span id="shipping">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+                <button id="placeOrderBtn" class="place-order-btn">Place Order</button>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Same footer as other pages -->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isVipSignup = urlParams.get('type') === 'vip';
+            
+            if (isVipSignup) {
+                loadVipPackage();
+            } else {
+                loadOrderSummary();
+            }
+            setupFormValidation();
+        });
+
+        function loadVipPackage() {
+            const orderItems = document.getElementById('order-items');
+            orderItems.innerHTML = `
+                <div class="order-item">
+                    <div class="item-details">
+                        <h3>VIP Membership Package</h3>
+                        <p>Annual VIP Membership with exclusive benefits</p>
+                        <ul class="vip-benefits">
+                            <li>Early Access to New Collections</li>
+                            <li>Exclusive VIP Events</li>
+                            <li>Priority Customer Service</li>
+                            <li>Special VIP Discounts</li>
+                            <li>Free Premium Shipping</li>
+                        </ul>
+                        <p class="item-price">$2050.00</p>
+                    </div>
+                </div>
+            `;
+
+            // Update totals for VIP package
+            document.getElementById('subtotal').textContent = '$2050.00';
+            document.getElementById('shipping').textContent = '$0.00';
+            document.getElementById('total').textContent = '$2050.00';
+        }
+
+        function loadOrderSummary() {
+            fetch('get_cart.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    displayOrderItems(data);
+                    updateTotals(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function displayOrderItems(items) {
+            const orderItems = document.getElementById('order-items');
+            orderItems.innerHTML = items.map(item => `
+                <div class="order-item">
+                    <img src="${item.image_url}" alt="${item.name}">
+                    <div class="item-details">
+                        <h3>${item.name}</h3>
+                        <p>Size: ${item.size}</p>
+                        <p>Quantity: ${item.quantity}</p>
+                        <p class="item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateTotals(items) {
+            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = subtotal > 0 ? 10 : 0;
+            const total = subtotal + shipping;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function setupFormValidation() {
+            // Card number formatting
+            document.getElementById('cardNumber').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = value;
+            });
+
+            // Expiry date formatting
+            document.getElementById('expiry').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.slice(0,2) + '/' + value.slice(2);
+                }
+                e.target.value = value;
+            });
+
+            // Place order button
+            document.getElementById('placeOrderBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (validateForms()) {
+                    processOrder();
+                }
+            });
+        }
+
+        function validateForms() {
+            const shippingForm = document.getElementById('shippingForm');
+            const paymentForm = document.getElementById('paymentForm');
+            
+            return shippingForm.checkValidity() && paymentForm.checkValidity();
+        }
+
+        function processOrder() {
+            // Collect form data
+            const orderData = {
+                shipping: {
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    zipCode: document.getElementById('zipCode').value,
+                    country: document.getElementById('country').value
+                },
+                payment: {
+                    cardName: document.getElementById('cardName').value,
+                    cardNumber: document.getElementById('cardNumber').value,
+                    expiry: document.getElementById('expiry').value,
+                    cvv: document.getElementById('cvv').value
+                }
+            };
+
+            // Send order to server
+            fetch('process_order.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'order-confirmation.html?order=' + data.orderId;
+                } else {
+                    alert('Error processing order: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html> 

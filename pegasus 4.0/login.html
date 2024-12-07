@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="stylelog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Add this near the top of your HTML files -->
+    <script>
+    fetch('check_db_status.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status !== 'ok') {
+                console.error('Database error:', data.message);
+                // Optionally show user-friendly error message
+                alert('System is currently unavailable. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Connection error:', error);
+        });
+    </script>
+</head>
+<header>
+    <nav>
+        <div class="logo">
+            <img src="pegasus-logo.png" alt="Pegasus Fashion Logo">
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="#about">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="auth-links">
+            <a href="cart.html" class="cart-link">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </a>
+            <a href="login.html">Login</a>
+            <a href="signup.html" class="signup-btn">Sign Up</a>
+        </div>
+    </nav>
+</header>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="left-side">
+                <h2>Login</h2>
+                <form action="process_login.php" method="POST">
+                    <div class="input-group">
+                        <input type="text" name="username" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" name="password" required>
+                        <label>Password</label>
+                    </div>
+                    <button type="submit">Login</button>
+                    <p class="signup-link">don't have an account? <a href="signup.html">Sign Up</a></p>
+                </form>
+            </div>
+            <div class="right-side">
+                <h1>WELCOME BACK!</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </div>
+        </div>
+    </div>
+</body>
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="#terms">Terms & Conditions</a>
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#rules">Store Rules</a>
+        </div>
+        <div class="footer-section">
+            <h3>Connect With Us</h3>
+            <div class="social-links">
+                <a href="https://www.facebook.com/PegasusFashion" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/pegasus.fashion" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:contact@pegasusfashion.com" aria-label="Contact us via email"><i class="far fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Pegasus Fashion. All rights reserved.</p>
+    </div>
+</footer>
+</html>

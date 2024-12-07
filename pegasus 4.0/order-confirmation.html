@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Pegasus Fashion</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="confirmation-box">
+            <i class="fas fa-check-circle"></i>
+            <h1>Order Confirmed!</h1>
+            <p>Your order has been successfully placed.</p>
+            <div class="order-details">
+                <h2>Order #<span id="orderId"></span></h2>
+                <p>Thank you for shopping with us!</p>
+            </div>
+            <a href="shop.html" class="continue-shopping-btn">Continue Shopping</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('order');
+            if (orderId) {
+                document.getElementById('orderId').textContent = orderId;
+            }
+        });
+    </script>
+</body>
+</html> 

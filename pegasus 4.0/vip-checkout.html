@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Membership Checkout - Pegasus Fashion</title>
+    <link rel="stylesheet" href="stylecheckout.css">
+    <link rel="stylesheet" href="stylevip-checkout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <!-- Same header as other pages -->
+    </header>
+
+    <main>
+        <div class="checkout-container">
+            <div class="checkout-sections">
+                <!-- Payment Information -->
+                <section class="payment-info">
+                    <h2>Payment Information</h2>
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <input type="text" id="cardName" required>
+                            <label for="cardName">Name on Card</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="cardNumber" maxlength="19" required>
+                            <label for="cardNumber">Card Number</label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="expiry" maxlength="5" placeholder="MM/YY" required>
+                                <label for="expiry">Expiry Date</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="cvv" maxlength="3" required>
+                                <label for="cvv">CVV</label>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Billing Information -->
+                <section class="billing-info">
+                    <h2>Billing Information</h2>
+                    <form id="billingForm">
+                        <div class="form-group">
+                            <input type="text" id="fullName" required>
+                            <label for="fullName">Full Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="address" required>
+                            <label for="address">Billing Address</label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="city" required>
+                                <label for="city">City</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="zipCode" required>
+                                <label for="zipCode">ZIP Code</label>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Order Summary -->
+            <section class="order-summary">
+                <h2>Membership Summary</h2>
+                <div id="membership-details" class="membership-details">
+                    <!-- Populated by JavaScript -->
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>First Year Membership</span>
+                        <span id="membershipFee">Free</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Processing Fee</span>
+                        <span id="processingFee">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Due Today</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+                <button id="confirmPaymentBtn" class="confirm-payment-btn">Confirm Payment</button>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Same footer as other pages -->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const plan = urlParams.get('plan');
+            const price = parseFloat(urlParams.get('price'));
+            const vipCode = urlParams.get('code');
+
+            // Display membership details
+            const membershipDetails = document.getElementById('membership-details');
+            membershipDetails.innerHTML = `
+                <div class="selected-plan ${plan.toLowerCase()}">
+                    <h3>${plan.toUpperCase()} Membership</h3>
+                    <p class="plan-price">$${price}/month</p>
+                </div>
+            `;
+
+            // Update totals
+            const processingFee = 5.00; // Example processing fee
+            document.getElementById('monthlyFee').textContent = `$${price.toFixed(2)}`;
+            document.getElementById('processingFee').textContent = `$${processingFee.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${(price + processingFee).toFixed(2)}`;
+
+            // Card number formatting
+            document.getElementById('cardNumber').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                value = value.replace(/(\d{4})/g, '$1 ').trim();
+                e.target.value = value;
+            });
+
+            // Expiry date formatting
+            document.getElementById('expiry').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.slice(0,2) + '/' + value.slice(2);
+                }
+                e.target.value = value;
+            });
+
+            // Handle payment submission
+            document.getElementById('confirmPaymentBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (validateForms()) {
+                    processVIPPayment();
+                }
+            });
+        });
+
+        function validateForms() {
+            return document.getElementById('paymentForm').checkValidity() && 
+                   document.getElementById('billingForm').checkValidity();
+        }
+
+        function processVIPPayment() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentData = {
+                plan: urlParams.get('plan'),
+                price: urlParams.get('price'),
+                vipCode: urlParams.get('code'),
+                payment: {
+                    cardName: document.getElementById('cardName').value,
+                    cardNumber: document.getElementById('cardNumber').value,
+                    expiry: document.getElementById('expiry').value,
+                    cvv: document.getElementById('cvv').value
+                },
+                billing: {
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    zipCode: document.getElementById('zipCode').value
+                }
+            };
+
+            fetch('process_vip_payment.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'vip-confirmation.html?order=' + data.orderId;
+                } else {
+                    alert(data.error || 'Payment failed. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+
+        function loadVipPackage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const plan = urlParams.get('plan');
+            let price = 0;
+            
+            switch(plan.toLowerCase()) {
+                case 'bronze':
+                    price = 325;
+                    break;
+                case 'silver':
+                    price = 650;
+                    break;
+                case 'gold':
+                    price = 1000;
+                    break;
+            }
+
+            // Rest of the function remains the same
+        }
+    </script>
+</body>
+</html> 

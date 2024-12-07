@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Pegasus Fashion</title>
+    <link rel="stylesheet" href="stylecart.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="pegasus-logo.png" alt="Pegasus Fashion Logo">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="#about">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="auth-links">
+                <a href="cart.html" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <a href="login.html">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="cart-container">
+            <h1>Shopping Cart</h1>
+            <div class="cart-items">
+                <!-- Cart items will be dynamically loaded here -->
+            </div>
+            <div class="promo-code-section">
+                <h3>Promotional Code</h3>
+                <div class="promo-input">
+                    <input type="text" id="promoCode" placeholder="Enter your promotional code">
+                    <button onclick="applyPromoCode()">Apply</button>
+                </div>
+                <div id="promoMessage"></div>
+            </div>
+            <div class="cart-summary">
+                <div class="subtotal">
+                    <span>Subtotal:</span>
+                    <span class="amount">$0.00</span>
+                </div>
+                <div class="shipping">
+                    <span>Shipping:</span>
+                    <span class="amount">$0.00</span>
+                </div>
+                <div class="total">
+                    <span>Total:</span>
+                    <span class="amount">$0.00</span>
+                </div>
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <!-- Same footer as other pages -->
+    </footer>
+
+    <script>
+    function applyPromoCode() {
+        const code = document.getElementById('promoCode').value.trim();
+        if (!code) {
+            showPromoMessage('Please enter a promotional code', 'error');
+            return;
+        }
+
+        fetch('validate_promo_code.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code: code })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showPromoMessage(data.message, 'success');
+                applyDiscount(data.discount);
+            } else {
+                showPromoMessage(data.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showPromoMessage('Something went wrong. Please try again.', 'error');
+        });
+    }
+
+    function showPromoMessage(message, type) {
+        const messageDiv = document.getElementById('promoMessage');
+        messageDiv.textContent = message;
+        messageDiv.className = `promo-message ${type}`;
+    }
+
+    function applyDiscount(discountPercent) {
+        const subtotalElement = document.querySelector('.subtotal .amount');
+        const totalElement = document.querySelector('.total .amount');
+        const shippingElement = document.querySelector('.shipping .amount');
+
+        const subtotal = parseFloat(subtotalElement.textContent.replace('$', ''));
+        const shipping = parseFloat(shippingElement.textContent.replace('$', ''));
+
+        const discount = subtotal * (discountPercent / 100);
+        const newSubtotal = subtotal - discount;
+        const newTotal = newSubtotal + shipping;
+
+        subtotalElement.textContent = `$${newSubtotal.toFixed(2)}`;
+        totalElement.textContent = `$${newTotal.toFixed(2)}`;
+
+        // Add discount display
+        const summaryDiv = document.querySelector('.cart-summary');
+        let discountDiv = document.querySelector('.discount');
+        if (!discountDiv) {
+            discountDiv = document.createElement('div');
+            discountDiv.className = 'discount summary-row';
+            discountDiv.innerHTML = `
+                <span>VIP Discount (${discountPercent}%)</span>
+                <span class="amount">-$${discount.toFixed(2)}</span>
+            `;
+            summaryDiv.insertBefore(discountDiv, document.querySelector('.total'));
+        }
+    }
+    </script>
+
+    <style>
+    .promo-code-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .promo-input {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .promo-input input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .promo-input button {
+        padding: 8px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .promo-message {
+        margin-top: 10px;
+        padding: 8px;
+        border-radius: 4px;
+    }
+
+    .promo-message.success {
+        background-color: #dff0d8;
+        color: #3c763d;
+    }
+
+    .promo-message.error {
+        background-color: #f2dede;
+        color: #a94442;
+    }
+
+    .discount {
+        color: #4CAF50;
+    }
+    </style>
+</body>
+</html> 

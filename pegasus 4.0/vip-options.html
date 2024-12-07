@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Membership - Pegasus Fashion</title>
+    <link rel="stylesheet" href="stylevip-options.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <main>
+        <div class="options-container">
+            <h1>VIP Membership</h1>
+            <p class="subtitle">Enter your desired membership amount</p>
+            
+            <div class="membership-custom">
+                <div class="membership-card">
+                    <div class="card-header custom">
+                        <h2>Custom VIP Membership</h2>
+                        <div class="price-input">
+                            <span class="currency">$</span>
+                            <input type="number" id="customAmount" min="325" step="1" value="325">
+                        </div>
+                        <p class="minimum-note">Minimum amount: $325</p>
+                        <p class="minimum-note">this offer is limited untile 31/12/2024</p>
+                        <p class="renewal-note">$20 annual renewal after first year</p>
+                        
+                    </div>
+                    <div class="card-content">
+                        <ul class="benefits">
+                            <li><i class="fas fa-check"></i> VIP Member Status</li>
+                            <li><i class="fas fa-check"></i> Exclusive VIP Benefits</li>
+                            <li><i class="fas fa-check"></i> Free Priority Shipping</li>
+                            <li><i class="fas fa-check"></i> Special VIP Events</li>
+                            <li><i class="fas fa-check"></i> Personal Shopping Assistant</li>
+                        </ul>
+                        <button onclick="validateAndProceed()" class="select-btn custom-btn">Continue</button>
+                        <div id="errorMessage" class="error-message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    function validateAndProceed() {
+        const amount = parseFloat(document.getElementById('customAmount').value);
+        const errorDiv = document.getElementById('errorMessage');
+        
+        fetch('validate_vip_amount.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount: amount })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Get VIP code from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const vipCode = urlParams.get('code');
+                
+                // Redirect to checkout with custom amount
+                window.location.href = `vip-checkout.html?amount=${amount}&code=${vipCode}`;
+            } else {
+                errorDiv.textContent = data.error;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorDiv.textContent = 'An error occurred. Please try again.';
+        });
+    }
+    </script>
+
+    <style>
+    .membership-custom {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .price-input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        margin: 20px 0;
+    }
+
+    .currency {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    #customAmount {
+        font-size: 24px;
+        width: 150px;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .minimum-note {
+        color: #360ee6;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+
+    .error-message {
+        color: #dc3545;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .custom-btn {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+    }
+
+    .custom-btn:hover {
+        background: linear-gradient(135deg, #34495e, #2980b9);
+    }
+    </style>
+</body>
+</html> 

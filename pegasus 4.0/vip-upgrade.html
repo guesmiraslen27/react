@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade VIP Membership - Pegasus Fashion</title>
+    <link rel="stylesheet" href="stylevip-options.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <main>
+        <div class="upgrade-container">
+            <h1>Upgrade VIP Membership</h1>
+            <div class="current-status">
+                <h2>Current Investment: <span id="currentAmount">$0.00</span></h2>
+            </div>
+            
+            <div class="upgrade-form">
+                <div class="amount-input">
+                    <span class="currency">$</span>
+                    <input type="number" id="upgradeAmount" min="1" step="1" placeholder="Enter upgrade amount">
+                </div>
+                <p class="upgrade-note">Enter the amount you want to add to your membership</p>
+                <button onclick="processUpgrade()" class="upgrade-btn">Upgrade Membership</button>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+
+            <div class="upgrade-history">
+                <h3>Upgrade History</h3>
+                <div id="historyList">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCurrentStatus();
+        loadUpgradeHistory();
+    });
+
+    function loadCurrentStatus() {
+        fetch('get_vip_status.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('currentAmount').textContent = 
+                        `$${data.membership_amount.toFixed(2)}`;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function loadUpgradeHistory() {
+        fetch('get_upgrade_history.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const historyList = document.getElementById('historyList');
+                    historyList.innerHTML = data.upgrades.map(upgrade => `
+                        <div class="upgrade-entry">
+                            <p>Added $${upgrade.upgrade_amount.toFixed(2)}</p>
+                            <p>New Total: $${upgrade.total_amount.toFixed(2)}</p>
+                            <small>${new Date(upgrade.upgrade_date).toLocaleDateString()}</small>
+                        </div>
+                    `).join('');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function processUpgrade() {
+        const amount = parseFloat(document.getElementById('upgradeAmount').value);
+        if (!amount || amount <= 0) {
+            showError('Please enter a valid amount');
+            return;
+        }
+
+        fetch('process_vip_upgrade.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amount: amount })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showSuccess(data.message);
+                loadCurrentStatus();
+                loadUpgradeHistory();
+                document.getElementById('upgradeAmount').value = '';
+            } else {
+                showError(data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('An error occurred. Please try again.');
+        });
+    }
+
+    function showError(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        errorDiv.textContent = message;
+        errorDiv.className = 'error-message error';
+    }
+
+    function showSuccess(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        errorDiv.textContent = message;
+        errorDiv.className = 'error-message success';
+    }
+    </script>
+
+    <style>
+    .upgrade-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .current-status {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .amount-input {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .upgrade-history {
+        margin-top: 40px;
+    }
+
+    .upgrade-entry {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+
+    .error-message.success {
+        color: #4CAF50;
+    }
+
+    .upgrade-btn {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .upgrade-btn:hover {
+        background: linear-gradient(135deg, #34495e, #2980b9);
+    }
+    </style>
+</body>
+</html> 

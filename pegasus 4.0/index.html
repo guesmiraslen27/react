@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="Discover trendy fashion at Pegasus Fashion - Your ultimate destination for style">
+   <meta name="keywords" content="fashion, clothing, style, pegasus fashion">
+   <link rel="icon" type="image/x-icon" href="favicon.ico">
+   <title>Pegasus Fashion</title>
+   <link rel="stylesheet" href="styles.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <!-- Add this near the top of your HTML files -->
+   <script>
+    fetch('check_db_status.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status !== 'ok') {
+                console.error('Database error:', data.message);
+                // Optionally show user-friendly error message
+                alert('System is currently unavailable. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Connection error:', error);
+        });
+    </script>
+</head>
+<body>
+   <header>
+       <nav>
+           <div class="logo">
+               <img src="pegasus-logo.png" alt="Pegasus Fashion Logo">
+           </div>
+           <div class="nav-links">
+               <a href="index.html">Home</a>
+               <a href="shop.html">Shop</a>
+               <a href="#about">About</a>
+               <a href="contact.html">Contact</a>
+           </div>
+           <div class="auth-links">
+               <a href="cart.html" class="cart-link">
+                   <i class="fas fa-shopping-cart"></i>
+                   <span class="cart-count">0</span>
+               </a>
+               <a href="login.html">Login</a>
+               <a href="signup.html" class="signup-btn">Sign Up</a>
+           </div>
+       </nav>
+   </header>
+    <main>
+       <section class="hero">
+           <div class="hero-content">
+               <h1>Welcome to Pegasus Fashion</h1>
+               <p>Discover Your Style, Embrace Your Wings</p>
+               <div class="hero-buttons">
+                   <a href="shop.html" class="shop-now-btn">Shop Now</a>
+                
+               </div>
+           </div>
+       </section>
+   </main>
+    <footer>
+       <div class="footer-content">
+           <div class="footer-section">
+               <h3>Quick Links</h3>
+               <a href="#terms">Terms & Conditions</a>
+               <a href="#privacy">Privacy Policy</a>
+               <a href="#rules">Store Rules</a>
+           </div>
+           <div class="footer-section">
+               <h3>Connect With Us</h3>
+               <div class="social-links">
+                   <a href="https://www.facebook.com/PegasusFashion" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page"><i class="fab fa-facebook"></i></a>
+                   <a href="https://www.instagram.com/pegasus.fashion" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                   <a href="mailto:contact@pegasusfashion.com" aria-label="Contact us via email"><i class="far fa-envelope"></i></a>
+               </div>
+           </div>
+       </div>
+       <div class="footer-bottom">
+           <p>&copy; 2024 Pegasus Fashion. All rights reserved.</p>
+       </div>
+   </footer>
+</body>
+</html>

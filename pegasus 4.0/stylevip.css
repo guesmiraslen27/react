@@ -1,0 +1,125 @@
+@import url('styles.css');
+
+.vip-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px);
+    margin: 100px auto 50px;
+    padding: 20px;
+}
+
+.vip-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.vip-content {
+    text-align: center;
+}
+
+.vip-content h2 {
+    color: var(--text-light);
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.vip-content p {
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.code-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.code-input input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+
+.code-input input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.verify-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 20px 0;
+}
+
+.verify-btn:hover {
+    background: var(--primary-hover);
+}
+
+.error-message {
+    color: #ff4444;
+    margin: 10px 0;
+    min-height: 20px;
+}
+
+.vip-benefits {
+    text-align: left;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.vip-benefits h3 {
+    color: var(--text-light);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.vip-benefits ul {
+    list-style: none;
+    padding: 0;
+}
+
+.vip-benefits li {
+    color: var(--text-light);
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vip-benefits i {
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .vip-box {
+        padding: 20px;
+    }
+
+    .code-input input {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+} 
